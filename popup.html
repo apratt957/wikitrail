@@ -30,30 +30,25 @@
         padding: 14px 18px 10px;
         border-bottom: 1px solid #222;
       }
-
       .logo {
         display: flex;
         align-items: center;
         gap: 8px;
       }
-
       .logo-icon {
         width: 22px;
         height: 22px;
         opacity: 0.9;
       }
-
       .logo-text {
         font-size: 17px;
         font-weight: bold;
         letter-spacing: 0.03em;
         color: #fff;
       }
-
       .logo-text span {
         color: #7eb8f7;
       }
-
       .status-pill {
         display: flex;
         align-items: center;
@@ -65,7 +60,6 @@
         border-radius: 20px;
         border: 1px solid #2a2a2a;
       }
-
       .status-dot {
         width: 7px;
         height: 7px;
@@ -73,13 +67,11 @@
         background: #444;
         transition: background 0.3s;
       }
-
       .status-dot.active {
         background: #4caf77;
         box-shadow: 0 0 6px #4caf7788;
         animation: pulse 2s infinite;
       }
-
       @keyframes pulse {
         0%,
         100% {
@@ -90,7 +82,7 @@
         }
       }
 
-      /* ── Session info bar ── */
+      /* ── Session bar ── */
       #session-bar {
         display: flex;
         align-items: center;
@@ -102,21 +94,50 @@
         border-bottom: 1px solid #1e1e1e;
         min-height: 34px;
       }
-
       #session-bar .meta {
         display: flex;
         gap: 16px;
       }
-
       #session-bar .meta span {
         color: #999;
       }
-
       #session-bar .meta strong {
         color: #ccc;
       }
 
-      /* ── Graph area ── */
+      /* ── View bar ── */
+      #view-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 5px 14px;
+        border-bottom: 1px solid #1a1a1a;
+        background: #0f0f0f;
+        gap: 6px;
+      }
+      #view-bar label {
+        font-size: 10px;
+        color: #555;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      #view-select {
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        color: #aaa;
+        font-size: 11px;
+        font-family: "Georgia", serif;
+        padding: 3px 8px;
+        border-radius: 5px;
+        cursor: pointer;
+        outline: none;
+      }
+      #view-select:hover {
+        border-color: #444;
+        color: #ccc;
+      }
+
+      /* ── Graph ── */
       #graph-container {
         flex: 1;
         position: relative;
@@ -124,12 +145,10 @@
         background: #0f0f0f;
         min-height: 300px;
       }
-
       #graph-container svg {
         width: 100%;
         height: 100%;
       }
-
       .empty-state {
         position: absolute;
         inset: 0;
@@ -143,25 +162,22 @@
         text-align: center;
         padding: 20px;
       }
-
       .empty-state .empty-icon {
         font-size: 36px;
         opacity: 0.4;
       }
-
       .empty-state p {
         max-width: 220px;
         line-height: 1.5;
         color: #444;
       }
 
-      /* ── D3 node/link styles ── */
+      /* ── D3 styles ── */
       .link {
         stroke: #2a4a6b;
         stroke-width: 1.5px;
         marker-end: url(#arrow);
       }
-
       .node circle {
         fill: #1a2f4a;
         stroke: #7eb8f7;
@@ -169,22 +185,18 @@
         cursor: pointer;
         transition: fill 0.2s;
       }
-
       .node circle:hover {
         fill: #2a4a6b;
       }
-
       .node.start circle {
         fill: #1a3a2a;
         stroke: #4caf77;
       }
-
       .node.current circle {
         fill: #2a2a1a;
         stroke: #f7d67e;
         stroke-width: 2px;
       }
-
       .node text {
         fill: #ccc;
         font-size: 9.5px;
@@ -209,11 +221,9 @@
         line-height: 1.5;
         z-index: 10;
       }
-
       #tooltip.visible {
         opacity: 1;
       }
-
       #tooltip strong {
         display: block;
         color: #fff;
@@ -229,7 +239,6 @@
         border-top: 1px solid #1e1e1e;
         background: #0f0f0f;
       }
-
       button {
         flex: 1;
         padding: 8px 12px;
@@ -240,35 +249,117 @@
         cursor: pointer;
         transition: all 0.15s;
       }
-
       #btn-end {
         background: #1a1a1a;
         color: #e07070;
         border-color: #3a2020;
       }
-
       #btn-end:hover {
         background: #2a1515;
         border-color: #e07070;
       }
-
       #btn-end:disabled {
         opacity: 0.35;
         cursor: default;
       }
-
       #btn-history {
         background: #1a1a1a;
         color: #888;
         border-color: #2a2a2a;
       }
-
       #btn-history:hover {
         background: #222;
         color: #aaa;
       }
 
-      /* ── Past trails panel ── */
+      /* ── End trail modal (name + tag before saving) ── */
+      #end-modal {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 30;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      #end-modal.open {
+        display: flex;
+      }
+      .modal-box {
+        background: #161616;
+        border: 1px solid #2a2a2a;
+        border-radius: 10px;
+        padding: 22px;
+        width: 100%;
+        max-width: 360px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .modal-box h3 {
+        font-size: 14px;
+        color: #ddd;
+        font-weight: normal;
+      }
+      .modal-box h3 span {
+        color: #7eb8f7;
+      }
+      .field-label {
+        font-size: 10px;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+      }
+      .modal-input {
+        width: 100%;
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        color: #ccc;
+        font-size: 12px;
+        font-family: "Georgia", serif;
+        padding: 8px 10px;
+        border-radius: 5px;
+        outline: none;
+      }
+      .modal-input:focus {
+        border-color: #7eb8f7;
+      }
+      .modal-input::placeholder {
+        color: #444;
+      }
+      .tag-hint {
+        font-size: 10px;
+        color: #444;
+        margin-top: 3px;
+      }
+      .modal-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 4px;
+      }
+      .modal-actions button {
+        flex: 1;
+      }
+      #btn-modal-cancel {
+        color: #666;
+      }
+      #btn-modal-cancel:hover {
+        color: #999;
+      }
+      #btn-modal-confirm {
+        background: #1a3a2a;
+        color: #4caf77;
+        border-color: #2a5a3a;
+      }
+      #btn-modal-confirm:hover {
+        background: #1f4a30;
+        border-color: #4caf77;
+      }
+
+      /* ── History panel ── */
       #history-panel {
         display: none;
         flex-direction: column;
@@ -278,11 +369,9 @@
         z-index: 20;
         overflow-y: auto;
       }
-
       #history-panel.open {
         display: flex;
       }
-
       .history-header {
         display: flex;
         align-items: center;
@@ -295,7 +384,6 @@
         top: 0;
         background: #0f0f0f;
       }
-
       #btn-close-history {
         flex: 0;
         padding: 4px 10px;
@@ -304,29 +392,91 @@
       }
 
       .trail-item {
-        padding: 12px 18px;
+        padding: 11px 18px;
         border-bottom: 1px solid #181818;
-        cursor: pointer;
         transition: background 0.1s;
       }
-
       .trail-item:hover {
-        background: #161616;
+        background: #131313;
       }
-
-      .trail-item .trail-date {
+      .trail-item-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .trail-item-main {
+        flex: 1;
+        cursor: pointer;
+      }
+      .trail-name {
+        font-size: 13px;
+        color: #ddd;
+        margin-bottom: 3px;
+      }
+      .trail-name.unnamed {
+        color: #555;
+        font-style: italic;
+      }
+      .trail-date {
         font-size: 10px;
         color: #555;
         margin-bottom: 4px;
       }
-
-      .trail-item .trail-summary {
-        font-size: 12px;
+      .trail-summary {
+        font-size: 11px;
+        color: #777;
+      }
+      .trail-summary strong {
         color: #999;
       }
+      .trail-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 6px;
+      }
+      .tag-pill {
+        font-size: 10px;
+        color: #7eb8f7;
+        background: #0f2035;
+        border: 1px solid #1e3a5a;
+        border-radius: 10px;
+        padding: 2px 8px;
+      }
+      .trail-actions {
+        display: flex;
+        gap: 5px;
+        align-items: flex-start;
+        flex-shrink: 0;
+      }
+      .trail-action-btn {
+        flex: 0;
+        padding: 3px 8px;
+        font-size: 11px;
+        color: #555;
+        background: #1a1a1a;
+        border-color: #222;
+      }
+      .trail-action-btn:hover {
+        color: #aaa;
+        border-color: #444;
+      }
 
-      .trail-item .trail-summary strong {
-        color: #ccc;
+      /* ── Inline edit form in history ── */
+      .trail-edit-form {
+        display: none;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #1e1e1e;
+      }
+      .trail-edit-form.open {
+        display: flex;
+      }
+      .trail-edit-form .modal-actions {
+        margin-top: 0;
       }
 
       .no-history {
@@ -346,11 +496,9 @@
         overflow-y: auto;
         animation: slideUp 0.2s ease;
       }
-
       #notes-drawer.open {
         display: flex;
       }
-
       @keyframes slideUp {
         from {
           opacity: 0;
@@ -361,7 +509,6 @@
           transform: translateY(0);
         }
       }
-
       .drawer-header {
         display: flex;
         align-items: center;
@@ -373,18 +520,15 @@
         background: #111;
         z-index: 1;
       }
-
-      .drawer-header .drawer-title {
+      .drawer-title {
         font-size: 12px;
         color: #ccc;
         font-weight: bold;
       }
-
-      .drawer-header .drawer-title span {
+      .drawer-title span {
         color: #7eb8f7;
       }
-
-      .drawer-header .drawer-link {
+      .drawer-link {
         font-size: 11px;
         color: #7eb8f7;
         text-decoration: none;
@@ -395,11 +539,9 @@
         background: none;
         font-family: "Georgia", serif;
       }
-
-      .drawer-header .drawer-link:hover {
+      .drawer-link:hover {
         background: #152030;
       }
-
       #btn-close-drawer {
         flex: 0;
         padding: 2px 8px;
@@ -410,18 +552,15 @@
         cursor: pointer;
         margin-left: 8px;
       }
-
       #btn-close-drawer:hover {
         color: #999;
       }
-
       .notes-list {
         padding: 8px 16px 12px;
         display: flex;
         flex-direction: column;
         gap: 8px;
       }
-
       .note-item {
         background: #1a1a1a;
         border: 1px solid #242424;
@@ -431,68 +570,23 @@
         color: #bbb;
         line-height: 1.5;
       }
-
       .note-item .note-time {
         font-size: 10px;
         color: #444;
         margin-top: 4px;
       }
-
       .no-notes {
         padding: 16px;
         text-align: center;
         color: #444;
         font-size: 12px;
       }
-
-      /* ── View selector ── */
-      #view-bar {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        padding: 5px 14px;
-        border-bottom: 1px solid #1a1a1a;
-        background: #0f0f0f;
-        gap: 6px;
-      }
-
-      #view-bar label {
-        font-size: 10px;
-        color: #555;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }
-
-      #view-select {
-        background: #1a1a1a;
-        border: 1px solid #2a2a2a;
-        color: #aaa;
-        font-size: 11px;
-        font-family: "Georgia", serif;
-        padding: 3px 8px;
-        border-radius: 5px;
-        cursor: pointer;
-        outline: none;
-        flex: 0;
-      }
-
-      #view-select:hover {
-        border-color: #444;
-        color: #ccc;
-      }
     </style>
   </head>
   <body>
-    <!-- Header -->
     <header>
       <div class="logo">
-        <!-- Simple inline SVG trail icon -->
-        <svg
-          class="logo-icon"
-          viewBox="0 0 22 22"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg class="logo-icon" viewBox="0 0 22 22" fill="none">
           <circle cx="4" cy="11" r="2.5" stroke="#4caf77" stroke-width="1.5" />
           <circle cx="11" cy="5" r="2.5" stroke="#7eb8f7" stroke-width="1.5" />
           <circle cx="18" cy="11" r="2.5" stroke="#7eb8f7" stroke-width="1.5" />
@@ -530,7 +624,6 @@
       </div>
     </header>
 
-    <!-- Session meta bar -->
     <div id="session-bar">
       <div class="meta">
         <span><strong id="page-count">0</strong> articles</span>
@@ -539,7 +632,6 @@
       <span id="session-start-label"></span>
     </div>
 
-    <!-- View selector -->
     <div id="view-bar">
       <label for="view-select">View</label>
       <select id="view-select">
@@ -548,7 +640,6 @@
       </select>
     </div>
 
-    <!-- Graph -->
     <div id="graph-container">
       <div class="empty-state" id="empty-state">
         <div class="empty-icon">🌐</div>
@@ -558,13 +649,44 @@
       <div id="tooltip"></div>
     </div>
 
-    <!-- Controls -->
     <div id="controls">
       <button id="btn-end" disabled>End Trail</button>
       <button id="btn-history">Past Trails</button>
     </div>
 
-    <!-- History panel (overlaid) -->
+    <!-- End trail modal -->
+    <div id="end-modal">
+      <div class="modal-box">
+        <h3>Save this <span>WikiTrail</span></h3>
+        <div>
+          <div class="field-label">Trail name</div>
+          <input
+            id="modal-name"
+            class="modal-input"
+            type="text"
+            placeholder="e.g. Roman Empire deep dive"
+            maxlength="80"
+          />
+        </div>
+        <div>
+          <div class="field-label">Tags</div>
+          <input
+            id="modal-tags"
+            class="modal-input"
+            type="text"
+            placeholder="history, research, fun"
+            maxlength="120"
+          />
+          <div class="tag-hint">Comma-separated</div>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-modal-cancel">Cancel</button>
+          <button id="btn-modal-confirm">Save &amp; End Trail</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- History panel -->
     <div id="history-panel">
       <div class="history-header">
         <span>Past Trails</span>
