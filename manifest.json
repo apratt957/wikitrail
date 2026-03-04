@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "WikiTrail",
+  "description": "Map your Wikipedia rabbit holes",
+  "version": "1.0",
+  "permissions": [
+    "tabs",
+    "storage",
+    "activeTab",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "*://*.wikipedia.org/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
