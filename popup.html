@@ -11,7 +11,6 @@
         padding: 0;
         box-sizing: border-box;
       }
-
       body {
         width: 480px;
         min-height: 520px;
@@ -172,7 +171,7 @@
         color: #444;
       }
 
-      /* ── D3 styles ── */
+      /* ── D3 ── */
       .link {
         stroke: #2a4a6b;
         stroke-width: 1.5px;
@@ -271,8 +270,50 @@
         background: #222;
         color: #aaa;
       }
+      #btn-search-notes {
+        background: #1a1a1a;
+        color: #888;
+        border-color: #2a2a2a;
+      }
+      #btn-search-notes:hover {
+        background: #222;
+        color: #aaa;
+      }
 
-      /* ── End trail modal (name + tag before saving) ── */
+      /* ── Shared overlay panel styles ── */
+      .overlay-panel {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        inset: 0;
+        background: #0f0f0f;
+        z-index: 20;
+        overflow-y: auto;
+      }
+      .overlay-panel.open {
+        display: flex;
+      }
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 18px;
+        border-bottom: 1px solid #222;
+        font-size: 13px;
+        color: #ccc;
+        position: sticky;
+        top: 0;
+        background: #0f0f0f;
+        z-index: 1;
+      }
+      .panel-close-btn {
+        flex: 0;
+        padding: 4px 10px;
+        font-size: 11px;
+        color: #888;
+      }
+
+      /* ── End trail modal ── */
       #end-modal {
         display: none;
         flex-direction: column;
@@ -330,6 +371,11 @@
       .modal-input::placeholder {
         color: #444;
       }
+      textarea.modal-input {
+        resize: vertical;
+        min-height: 56px;
+        line-height: 1.5;
+      }
       .tag-hint {
         font-size: 10px;
         color: #444;
@@ -360,37 +406,6 @@
       }
 
       /* ── History panel ── */
-      #history-panel {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        inset: 0;
-        background: #0f0f0f;
-        z-index: 20;
-        overflow-y: auto;
-      }
-      #history-panel.open {
-        display: flex;
-      }
-      .history-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px 18px;
-        border-bottom: 1px solid #222;
-        font-size: 13px;
-        color: #ccc;
-        position: sticky;
-        top: 0;
-        background: #0f0f0f;
-      }
-      #btn-close-history {
-        flex: 0;
-        padding: 4px 10px;
-        font-size: 11px;
-        color: #888;
-      }
-
       .trail-item {
         padding: 11px 18px;
         border-bottom: 1px solid #181818;
@@ -462,8 +477,6 @@
         color: #aaa;
         border-color: #444;
       }
-
-      /* ── Inline edit form in history ── */
       .trail-edit-form {
         display: none;
         flex-direction: column;
@@ -478,8 +491,85 @@
       .trail-edit-form .modal-actions {
         margin-top: 0;
       }
-
       .no-history {
+        text-align: center;
+        color: #444;
+        font-size: 12px;
+        padding: 40px 20px;
+      }
+
+      /* ── Note search panel ── */
+      .search-bar {
+        padding: 10px 14px;
+        border-bottom: 1px solid #1a1a1a;
+        position: sticky;
+        top: 52px;
+        background: #0f0f0f;
+        z-index: 1;
+      }
+      #notes-search-input {
+        width: 100%;
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        color: #ccc;
+        font-size: 12px;
+        font-family: "Georgia", serif;
+        padding: 7px 10px;
+        border-radius: 5px;
+        outline: none;
+      }
+      #notes-search-input:focus {
+        border-color: #7eb8f7;
+      }
+      #notes-search-input::placeholder {
+        color: #444;
+      }
+      #search-results {
+        flex: 1;
+        overflow-y: auto;
+      }
+      .search-result-item {
+        padding: 11px 18px;
+        border-bottom: 1px solid #181818;
+        cursor: pointer;
+        transition: background 0.1s;
+      }
+      .search-result-item:hover {
+        background: #131313;
+      }
+      .search-result-note {
+        font-size: 12px;
+        color: #ccc;
+        line-height: 1.5;
+        margin-bottom: 5px;
+      }
+      .search-result-note a {
+        color: #7eb8f7;
+        text-decoration: none;
+      }
+      .search-result-note a:hover {
+        text-decoration: underline;
+      }
+      .search-result-meta {
+        font-size: 10px;
+        color: #555;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .search-result-meta .result-article {
+        color: #888;
+      }
+      .search-result-meta .result-trail {
+        color: #555;
+      }
+      .search-highlight {
+        background: #2a3a1a;
+        color: #9dcc6e;
+        border-radius: 2px;
+        padding: 0 2px;
+      }
+      .no-results {
         text-align: center;
         color: #444;
         font-size: 12px;
@@ -662,6 +752,7 @@
     <div id="controls">
       <button id="btn-end" disabled>End Trail</button>
       <button id="btn-history">Past Trails</button>
+      <button id="btn-search-notes">Search Notes</button>
     </div>
 
     <!-- End trail modal -->
@@ -677,6 +768,20 @@
             placeholder="e.g. Roman Empire deep dive"
             maxlength="80"
           />
+        </div>
+        <div>
+          <div class="field-label">
+            Research question
+            <span style="color: #333; font-size: 9px; text-transform: none"
+              >(optional)</span
+            >
+          </div>
+          <textarea
+            id="modal-question"
+            class="modal-input"
+            placeholder="What were you trying to find out?"
+            maxlength="300"
+          ></textarea>
         </div>
         <div>
           <div class="field-label">Tags</div>
@@ -697,12 +802,29 @@
     </div>
 
     <!-- History panel -->
-    <div id="history-panel">
-      <div class="history-header">
+    <div id="history-panel" class="overlay-panel">
+      <div class="panel-header">
         <span>Past Trails</span>
-        <button id="btn-close-history">✕ Close</button>
+        <button id="btn-close-history" class="panel-close-btn">✕ Close</button>
       </div>
       <div id="history-list"></div>
+    </div>
+
+    <!-- Note search panel -->
+    <div id="search-panel" class="overlay-panel">
+      <div class="panel-header">
+        <span>Search Notes</span>
+        <button id="btn-close-search" class="panel-close-btn">✕ Close</button>
+      </div>
+      <div class="search-bar">
+        <input
+          id="notes-search-input"
+          type="text"
+          placeholder="Search across all saved notes…"
+          autocomplete="off"
+        />
+      </div>
+      <div id="search-results"></div>
     </div>
 
     <!-- Notes Drawer -->
