@@ -279,6 +279,77 @@
         background: #222;
         color: #aaa;
       }
+      #btn-new-trail {
+        background: #1a1a1a;
+        color: #7eb8f7;
+        border-color: #1e3a5a;
+      }
+      #btn-new-trail:hover {
+        background: #0f2035;
+        border-color: #7eb8f7;
+      }
+
+      /* ── New trail modal ── */
+      #new-trail-modal {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.88);
+        z-index: 30;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      #new-trail-modal.open {
+        display: flex;
+      }
+      #new-trail-modal .modal-box {
+        gap: 12px;
+      }
+      #new-trail-modal p {
+        font-size: 12px;
+        color: #666;
+        line-height: 1.6;
+      }
+      /* Save sub-form — hidden until "Save first" chosen */
+      #new-trail-save-form {
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        border-top: 1px solid #222;
+        padding-top: 12px;
+      }
+      #new-trail-save-form.open {
+        display: flex;
+      }
+      #btn-nts-save {
+        background: #1a3a2a;
+        color: #4caf77;
+        border-color: #2a5a3a;
+      }
+      #btn-nts-save:hover {
+        background: #1f4a30;
+        border-color: #4caf77;
+      }
+      #btn-nt-discard {
+        background: #1a1a1a;
+        color: #e07070;
+        border-color: #3a2020;
+      }
+      #btn-nt-discard:hover {
+        background: #2a1515;
+        border-color: #e07070;
+      }
+      #btn-nt-save-first {
+        background: #1a2f4a;
+        color: #7eb8f7;
+        border-color: #1e3a5a;
+      }
+      #btn-nt-save-first:hover {
+        background: #0f2035;
+        border-color: #7eb8f7;
+      }
 
       /* ── Shared overlay panel styles ── */
       .overlay-panel {
@@ -751,6 +822,7 @@
 
     <div id="controls">
       <button id="btn-end" disabled>End Trail</button>
+      <button id="btn-new-trail">New Trail</button>
       <button id="btn-history">Past Trails</button>
       <button id="btn-search-notes">Search Notes</button>
     </div>
@@ -783,6 +855,53 @@
         <div class="modal-actions">
           <button id="btn-modal-cancel">Cancel</button>
           <button id="btn-modal-confirm">Save &amp; End Trail</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- New trail modal -->
+    <div id="new-trail-modal">
+      <div class="modal-box">
+        <h3>Start a new <span>WikiTrail</span> from this page?</h3>
+        <p>
+          A trail is currently in progress. You can save it first, or discard it
+          and start fresh.
+        </p>
+
+        <!-- Initial 3-button row -->
+        <div id="new-trail-initial-actions" class="modal-actions">
+          <button id="btn-nt-cancel">Cancel</button>
+          <button id="btn-nt-discard">Discard &amp; Restart</button>
+          <button id="btn-nt-save-first">Save first ›</button>
+        </div>
+
+        <!-- Save sub-form, revealed by "Save first" -->
+        <div id="new-trail-save-form">
+          <div>
+            <div class="field-label">Trail name</div>
+            <input
+              id="nts-name"
+              class="modal-input"
+              type="text"
+              placeholder="e.g. Roman Empire deep dive"
+              maxlength="80"
+            />
+          </div>
+          <div>
+            <div class="field-label">Tags</div>
+            <input
+              id="nts-tags"
+              class="modal-input"
+              type="text"
+              placeholder="history, research, fun"
+              maxlength="120"
+            />
+            <div class="tag-hint">Comma-separated</div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-nts-back">‹ Back</button>
+            <button id="btn-nts-save">Save &amp; Restart</button>
+          </div>
         </div>
       </div>
     </div>

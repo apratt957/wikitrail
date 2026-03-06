@@ -30,6 +30,17 @@ const modalName = document.getElementById("modal-name");
 const modalTags = document.getElementById("modal-tags");
 const btnModalCancel = document.getElementById("btn-modal-cancel");
 const btnModalConfirm = document.getElementById("btn-modal-confirm");
+const btnNewTrail = document.getElementById("btn-new-trail");
+const newTrailModal = document.getElementById("new-trail-modal");
+const ntInitialActions = document.getElementById("new-trail-initial-actions");
+const ntSaveForm = document.getElementById("new-trail-save-form");
+const ntsNameInput = document.getElementById("nts-name");
+const ntsTagsInput = document.getElementById("nts-tags");
+const btnNtCancel = document.getElementById("btn-nt-cancel");
+const btnNtDiscard = document.getElementById("btn-nt-discard");
+const btnNtSaveFirst = document.getElementById("btn-nt-save-first");
+const btnNtsBack = document.getElementById("btn-nts-back");
+const btnNtsSave = document.getElementById("btn-nts-save");
 
 let elapsedInterval = null;
 let currentSession = null;
@@ -211,6 +222,168 @@ modalName.addEventListener("keydown", (e) => {
 modalTags.addEventListener("keydown", (e) => {
   if (e.key === "Enter") btnModalConfirm.click();
 });
+
+// ─────────────────────────────────────────────
+//  NEW TRAIL MODAL
+// ─────────────────────────────────────────────
+
+function openNewTrailModal() {
+  // Reset to initial state
+  ntSaveForm.classList.remove("open");
+  ntInitialActions.style.display = "";
+  ntsNameInput.value = "";
+  ntsTagsInput.value = "";
+  newTrailModal.classList.add("open");
+}
+
+function closeNewTrailModal() {
+  newTrailModal.classList.remove("open");
+}
+
+btnNewTrail.addEventListener("click", async () => {
+  if (!currentSession) {
+    await startFreshTrail(null, []);
+  } else {
+    openNewTrailModal();
+  }
+});
+
+btnNtCancel.addEventListener("click", closeNewTrailModal);
+
+// "Save first ›" — hide initial buttons, reveal save form
+btnNtSaveFirst.addEventListener("click", () => {
+  ntInitialActions.style.display = "none";
+  ntSaveForm.classList.add("open");
+  ntsNameInput.focus();
+});
+
+// "‹ Back" — return to initial buttons
+btnNtsBack.addEventListener("click", () => {
+  ntSaveForm.classList.remove("open");
+  ntInitialActions.style.display = "";
+});
+
+// "Discard & Restart" — wipe session, seed new one from current page
+btnNtDiscard.addEventListener("click", async () => {
+  closeNewTrailModal();
+  await startFreshTrail(null, []);
+});
+
+// "Save & Restart" — save with name/tags, then seed new trail
+btnNtsSave.addEventListener("click", async () => {
+  closeNewTrailModal();
+  await startFreshTrail(
+    ntsNameInput.value.trim() || null,
+    parseTags(ntsTagsInput.value),
+  );
+});
+
+ntsNameInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") ntsTagsInput.focus();
+});
+ntsTagsInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") btnNtsSave.click();
+});
+
+// ── Core: optionally save current trail, then seed a brand-new session
+//    rooted at whatever Wikipedia article is open in the current tab.
+//    We write directly to storage rather than reloading the page, which
+//    avoids a flash and works even if scripting permissions aren't granted.
+async function startFreshTrail(name, tags) {
+  if (currentTabId === null) return;
+
+  // Save current trail if a name/tags were provided (save path)
+  if (currentSession && name !== null) {
+    const finishedTrail = {
+      ...currentSession,
+      endTime: Date.now(),
+      name,
+      tags,
+    };
+    try {
+      const trails = await getAllTrails();
+      trails.push(finishedTrail);
+      await chrome.storage.local.set({ completedTrails: trails });
+    } catch (e) {
+      console.error("[WikiTrail] Failed to save trail on restart:", e);
+    }
+  }
+
+  // Get the current tab's URL so we can root the new session there
+  let seedUrl = null;
+  let seedTitle = null;
+  try {
+    const tab = await chrome.tabs.get(currentTabId);
+    const match = tab.url?.match(
+      /^https?:\/\/([a-z]+\.)?wikipedia\.org\/wiki\/([^#?]+)/,
+    );
+    if (match) {
+      seedUrl = tab.url;
+      seedTitle = decodeURIComponent(match[2]).replace(/_/g, " ");
+    }
+  } catch (e) {
+    console.warn("[WikiTrail] Could not read current tab URL:", e);
+  }
+
+  // Build a fresh session seeded with the current page (or empty if
+  // we somehow can't read the URL — background will fill it on next nav)
+  const newSession = seedTitle
+    ? {
+        id: `${currentTabId}-${Date.now()}`,
+        tabId: currentTabId,
+        startTime: Date.now(),
+        nodes: [
+          {
+            title: seedTitle,
+            url: seedUrl,
+            from: null,
+            time: Date.now(),
+            timeSpent: 0,
+            notes: [],
+          },
+        ],
+      }
+    : null;
+
+  // Write new session (or clear) and update tabState so background.js
+  // picks up cleanly from here without double-counting the current page
+  try {
+    const all = await getActiveTabSessions();
+    if (newSession) {
+      all[currentTabId] = newSession;
+    } else {
+      delete all[currentTabId];
+    }
+    await chrome.storage.local.set({ activeTabSessions: all });
+
+    // Reset tabState for this tab so background doesn't re-add current page
+    const { tabState = {} } = await chrome.storage.session.get("tabState");
+    if (seedTitle && seedUrl) {
+      tabState[currentTabId] = {
+        url: seedUrl,
+        title: seedTitle,
+        arrivedAt: Date.now(),
+      };
+    } else {
+      delete tabState[currentTabId];
+    }
+    await chrome.storage.session.set({ tabState });
+  } catch (e) {
+    console.error("[WikiTrail] Failed to seed new session:", e);
+  }
+
+  clearInterval(elapsedInterval);
+  currentSession = newSession;
+  currentNodes = null;
+
+  if (newSession) {
+    setActiveUI(newSession);
+    renderView(newSession.nodes);
+    startElapsedTimer(newSession.startTime);
+  } else {
+    setIdleUI();
+  }
+}
 
 // ─────────────────────────────────────────────
 //  HISTORY PANEL
