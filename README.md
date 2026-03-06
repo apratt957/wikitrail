@@ -69,7 +69,7 @@ Open the popup at any time to see your trail so far. Switch between Network and 
 
 ### Saving notes
 
-While on any Wikipedia article, highlight a passage of text, right-click, and choose **Save to current hole**. Notes are attached to the article they were saved from. Click any node in the graph or any bar in the timeline to open that article's notes drawer.
+While on any Wikipedia article, highlight a passage of text, right-click, and choose **Save to current trail node**. Notes are attached to the article they were saved from. Click any node in the graph or any bar in the timeline to open that article's notes drawer.
 
 ### Ending a trail
 
@@ -110,13 +110,13 @@ Click **Search Notes** to open the global search panel. Type any query to search
 
 ## Permissions
 
-| Permission              | Reason                                                               |
-| ----------------------- | -------------------------------------------------------------------- |
-| `tabs`                  | Read the URL of the active tab to detect Wikipedia navigation        |
-| `storage`               | Save session data and completed trails locally                       |
-| `activeTab`             | Access the current tab when the popup is open                        |
-| `contextMenus`          | Add the _Save to current hole_ right-click option on Wikipedia pages |
-| `*://*.wikipedia.org/*` | Track navigation and enable the context menu on Wikipedia only       |
+| Permission              | Reason                                                                     |
+| ----------------------- | -------------------------------------------------------------------------- |
+| `tabs`                  | Read the URL of the active tab to detect Wikipedia navigation              |
+| `storage`               | Save session data and completed trails locally                             |
+| `activeTab`             | Access the current tab when the popup is open                              |
+| `contextMenus`          | Add the _Save to current trail node_ right-click option on Wikipedia pages |
+| `*://*.wikipedia.org/*` | Track navigation and enable the context menu on Wikipedia only             |
 
 ---
 
