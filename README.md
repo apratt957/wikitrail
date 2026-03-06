@@ -22,7 +22,7 @@ Highlight any text on a Wikipedia page, right-click, and choose _Save to current
 **Search across all notes**
 A global search panel queries every note you've ever saved, across every trail, with results linked back to the article and session they came from. Matches are highlighted inline.
 
-**Session naming, tagging, and research questions**
+**Session naming and tagging**
 When you end a trail you can give it a name and comma-separated tags. Past trails are fully editable after the fact.
 
 **HTML and Markdown export**
@@ -64,7 +64,7 @@ wikitrail/
 
 ### Recording a trail
 
-Navigate to any Wikipedia article — tracking starts automatically. The popup status indicator turns green and pulses while a session is active.
+Navigate to any Wikipedia article — tracking starts automatically when you navigate to a wikipedia page. There is also an option to manually start a trail from any wikipedia page and either save or discard the current trail. The popup status indicator turns green and pulses while a session is active.
 
 Open the popup at any time to see your trail so far. Switch between Network and Timeline views using the dropdown in the top bar.
 
@@ -84,7 +84,7 @@ Click **End Trail** in the popup. A modal will ask for:
 Click **Past Trails** to browse your history. Each trail shows its name, date, duration, article count, and note count. From here you can:
 
 - **Click** a trail to view its graph
-- **✎** — edit the name, research question, or tags
+- **✎** — edit the name or tags
 - **H** — export as a self-contained HTML file
 - **M** — export as a Markdown document
 - **🗑** — delete (tap once to arm, tap again within 3 seconds to confirm)
