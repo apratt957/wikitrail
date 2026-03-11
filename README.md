@@ -38,7 +38,7 @@ Remove any completed trail from your history.
 
 ## Installation
 
-WikiTrail is not yet on the Chrome Web Store. To install it manually:
+WikiTrail can be added via the chrome web store [here] (https://chromewebstore.google.com/detail/wikitrail/mikdplalkdngphcmaggdlfhbldconmgg) To install it manually:
 
 1. Download or clone this repository
 2. Download [D3 v7](https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js) and save it as `d3.min.js` in the extension folder
